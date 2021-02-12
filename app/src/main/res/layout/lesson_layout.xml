@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="lesson"
+            type="com.example.startup.models.Lesson" />
+        <variable
+            name="clickListener"
+            type="com.example.startup.fragments.lessons.LessonListener" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constrain"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/rounded_button_blue"
+        android:onClick="@{() -> clickListener.onClick(lesson)}"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginLeft="25dp">
+
+        <TextView
+            android:id="@+id/id"
+            android:layout_width="55dp"
+            android:layout_height="48dp"
+            android:text="33"
+            android:textSize="28dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/title"
+            app:layout_constraintHorizontal_bias="0.731"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
+            app:lessonId="@{lesson}" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="278dp"
+            android:layout_height="47dp"
+            android:layout_marginStart="96dp"
+            android:text="TextView"
+            android:textSize="24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
+            app:lessonTitle="@{lesson}" />
+        <!--    app:readedImage="@{lesson}"-->
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
