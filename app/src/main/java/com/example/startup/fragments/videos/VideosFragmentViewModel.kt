@@ -18,18 +18,23 @@ class VideosFragmentViewModel:ViewModel() {
         val docRef = db.collection("articles").document(language).collection("basics").document(lesson)
         docRef.get().addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                videosUrlsLite = task.result!!.data!!["links"] as List<String>
-                if(videosUrls.isEmpty() ){
-                    var count = 0
-                    videosUrlsLite.forEach {
-                        videosUrls.add(count, YouTubeVideo(videoId = it))
-                        count++
+                if (task.result?.data?.get("links") != null) {
+                    videosUrlsLite = task.result?.data?.get("links") as List<String>
+                    if (videosUrls.isEmpty()) {
+                        var count = 0
+                        videosUrlsLite.forEach {
+                            videosUrls.add(count, YouTubeVideo(videoId = it))
+                            count++
+                        }
                     }
+                    adapter.submitList(videosUrls)
+                    Log.d(
+                        ContentValues.TAG,
+                        "DocumentSnapshot data: " + task.result!!.data!!["value"]
+                    )
+                } else {
+                    Log.d(ContentValues.TAG, "get failed with ", task.exception)
                 }
-                adapter.submitList(videosUrls)
-                Log.d(ContentValues.TAG, "DocumentSnapshot data: " + task.result!!.data!!["value"])
-            } else {
-                Log.d(ContentValues.TAG, "get failed with ", task.exception)
             }
         }.addOnFailureListener {
                 e -> Log.e(ContentValues.TAG, "Error writing document", e)

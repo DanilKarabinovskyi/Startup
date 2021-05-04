@@ -17,7 +17,7 @@ class VideosRecyclerAdapter internal constructor(private val youtubeVideoList: L
         return VideoViewHolder(view)
     }
     override fun onBindViewHolder(holder: VideoViewHolder, position: Int) {
-        holder.videoWeb.loadData(youtubeVideoList[position].videoId!!, "text/html", "utf-8")
+        holder.videoWeb.loadData(youtubeVideoList[position].videoId, "text/html", "utf-8")
     }
     inner class VideoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var videoWeb: WebView = itemView.findViewById(R.id.youtube_video_view)

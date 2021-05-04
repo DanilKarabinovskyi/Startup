@@ -20,18 +20,21 @@ class LinksToArticlesFragmentViewModel: ViewModel() {
         docRef.get().addOnCompleteListener { task ->
             Log.d(ContentValues.TAG,"in-------------------------------------------------------------------------------------")
             if (task.isSuccessful) {
-                linksToArticlesLite = task.result!!.data!!["linksToArticles"] as List<String>
-                var count = 0
-                if(linksToArticles.isEmpty() ){
-                    linksToArticlesLite.forEach {
-                        linksToArticles.add(count, LinkToArticle(linkUrl = it))
-                        count++
+                if (task.result?.data?.get("linksToArticles") != null) {
+                    linksToArticlesLite = task.result?.data?.get("linksToArticles") as List<String>
+                        ?: mutableListOf<String>() as List<String>
+                    var count = 0
+                    if (linksToArticles.isEmpty()) {
+                        linksToArticlesLite.forEach {
+                            linksToArticles.add(count, LinkToArticle(linkUrl = it))
+                            count++
+                        }
                     }
+                    adapter.submitList(linksToArticles)
+//                Log.d(ContentValues.TAG, "DocumentSnapshot data: " + task!!.result!!.data!!["array"])
+                } else {
+                    Log.d(ContentValues.TAG, "get failed with ", task.exception)
                 }
-                adapter.submitList(linksToArticles)
-                Log.d(ContentValues.TAG, "DocumentSnapshot data: " + task!!.result!!.data!!["array"])
-            } else {
-                Log.d(ContentValues.TAG, "get failed with ", task.exception)
             }
         }.addOnFailureListener {
                 e -> Log.e(ContentValues.TAG, "Error writing document", e)

@@ -47,10 +47,10 @@ class LessonsFragment : Fragment() {
     }
     override fun onOptionsItemSelected(thisItem: MenuItem): Boolean {
         when (thisItem.itemId) {
-            R.id.sort_menu_item -> {
-                viewModel.sort()
-                adapter.notifyDataSetChanged()
-            }
+//            R.id.sort_menu_item -> {
+//                viewModel.sort()
+//                adapter.notifyDataSetChanged()
+//            }
         }
         return super.onOptionsItemSelected(thisItem)
     }

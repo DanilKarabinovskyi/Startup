@@ -15,13 +15,16 @@ class CodeExampleFragmentViewModel : ViewModel() {
         val docRef = db.collection("articles").document(language).collection("basics").document(lesson)
         docRef.get().addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                gettedArticle = task.result!!.data!!["codeExample"] as String
-                if(substring(gettedArticle,"<pre>")){
-                    gettedArticle = replaceRealization(gettedArticle,"<pre>","\t\t\t")
+                if (task.result?.data?.get("codeExample") != null) {
+                    gettedArticle = task.result?.data?.get("codeExample") as String
+                    if (substring(gettedArticle, "<pre>")) {
+                        gettedArticle = replaceRealization(gettedArticle, "<pre>", "\t\t\t")
+                    }
+                    article.text =
+                        HtmlCompat.fromHtml(gettedArticle, HtmlCompat.FROM_HTML_MODE_LEGACY)
+                } else {
+                    Log.d(ContentValues.TAG, "get failed with ", task.exception)
                 }
-                article.text = HtmlCompat.fromHtml(gettedArticle, HtmlCompat.FROM_HTML_MODE_LEGACY)
-            } else {
-                Log.d(ContentValues.TAG, "get failed with ", task.exception)
             }
         }.addOnFailureListener {
                 e -> Log.e(ContentValues.TAG, "Error writing document", e)

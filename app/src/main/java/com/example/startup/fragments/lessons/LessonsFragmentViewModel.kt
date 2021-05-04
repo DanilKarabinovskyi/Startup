@@ -23,41 +23,34 @@ class LessonsFragmentViewModel:ViewModel() {
         val docRef = db.collection("articles").document(language).collection("titles").document("value")
             docRef.get().addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    lessonsLite = task.result!!.data!!["array"] as List<String>
-                    docRefProgress.get().addOnCompleteListener { firstTask ->
-                        if (firstTask.isSuccessful) {
-                            lessonsProgress = (firstTask.result!!.data!![language] as List<Boolean>).toMutableList()
-                             for(i in lessons.indices){
-                                 lessons.removeAt(0)
-                             }
-                            for(i in lessonsProgress.indices){
-                                lessons.add(i, Lesson(i+1,lessonsLite[i],lessonsProgress[i]))
+                    if (task.result?.data?.get("array") != null) {
+                        lessonsLite = task.result!!.data!!["array"] as List<String>?
+                            ?: mutableListOf<String>() as List<String>
+                        docRefProgress.get().addOnCompleteListener { firstTask ->
+                            if (firstTask.isSuccessful) {
+                                lessonsProgress =
+                                    (firstTask.result!!.data!![language] as List<Boolean>).toMutableList()
+                                for (i in lessons.indices) {
+                                    lessons.removeAt(0)
+                                }
+                                for (i in lessonsLite.indices) {
+                                    lessons.add(
+                                        i,
+                                        Lesson(i + 1, lessonsLite[i], lessonsProgress[i])
+                                    )
+                                }
+                                adapter.submitList(lessons)
+                            } else {
                             }
-                            adapter.submitList(lessons)
-                            Log.d(TAG, "DocumentSnapshot data: " + firstTask.result!!.data!![language])
-                        } else {
+                        }.addOnFailureListener {
+
                         }
-                    }.addOnFailureListener {
+                    } else {
+                        Log.d(TAG, "get failed with ", task.exception)
                     }
-                    Log.d(TAG, "DocumentSnapshot data: " + task!!.result!!.data!!["array"])
-                } else {
-                    Log.d(TAG, "get failed with ", task.exception)
                 }
         }.addOnFailureListener {
                 e -> Log.e(TAG, "Error writing document", e)
-        }
-    }
-
-    fun sort(){
-        val size = lessons.size
-        for (i in 0 until size){
-            for(j in 0 until size){
-                if(lessons[i].name < lessons[j].name  ){
-                    var tmp = lessons[i]
-                    lessons[i] = lessons[j]
-                    lessons[j] = tmp
-                }
-            }
         }
     }
 }

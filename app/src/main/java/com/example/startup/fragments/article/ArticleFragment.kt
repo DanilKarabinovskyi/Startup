@@ -34,7 +34,7 @@ class ArticleFragment(private  val lessonArg: String, private  val languageArg: 
         viewModel = ViewModelProvider(this).get(ArticleFragmentViewModel::class.java)
         binding.articleViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
-        viewModel.getList(lesson,language,binding.article)
+        viewModel.getList(lesson,language,binding.webView)
         return binding.root
     }
 

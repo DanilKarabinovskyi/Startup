@@ -51,15 +51,18 @@ class LinksToArticlesAdapter(
         docRef.get().addOnCompleteListener { task ->
             Log.d(ContentValues.TAG,"in-------------------------------------------------------------------------------------")
             if (task.isSuccessful) {
-                linksToArticlesDescription = task.result!!.data!!["descriptionLinksToArticles"] as List<String>
-                when (holder) {
-                    else -> {
-                        val item = getItem(position)
-                        holder.bind(linksToArticlesDescription[position],item, clickListener)
+                if (task.result?.data?.get("descriptionLinksToArticles") != null) {
+                    linksToArticlesDescription =
+                        task.result?.data?.get("descriptionLinksToArticles") as List<String>
+                    when (holder) {
+                        else -> {
+                            val item = getItem(position)
+                            holder.bind(linksToArticlesDescription[position], item, clickListener)
+                        }
                     }
+                    val item = getItem(position)
+                    holder.bind(linksToArticlesDescription[position], item, clickListener)
                 }
-                val item = getItem(position)
-                holder.bind(linksToArticlesDescription[position],item,clickListener)
             }
         }.addOnFailureListener {
                 e -> Log.e(ContentValues.TAG, "Error writing document", e)

@@ -16,10 +16,10 @@
 <!--            android:icon="@drawable/ic_menu_gallery"-->
 <!--            android:title="Settings"-->
 <!--            android:visible="true" />-->
-        <item
-            android:id="@+id/voiceInput"
-            android:title="voiceInputFragment"
-            android:visible="true" />
+<!--        <item-->
+<!--            android:id="@+id/voiceInput"-->
+<!--            android:title="voiceInputFragment"-->
+<!--            android:visible="true" />-->
     </group>
 
 
